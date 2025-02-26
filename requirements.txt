@@ -2,3 +2,4 @@ requests
 python-dotenv
 python-telegram-bot
 pandas
+beautifulsoup4
