@@ -63,7 +63,12 @@ async def send_alerts(alerts):
         return  # Esce dalla funzione se alerts è vuoto
     
     for alert in alerts:
-        await bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
+        try:
+            await bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
+            await asyncio.sleep(1.5)  # Aggiunge un ritardo tra i messaggi per evitare blocchi
+        except telegram.error.TimedOut:
+            print("⏳ Timeout Telegram, riprovo...")
+            await asyncio.sleep(5)  # Aspetta 5 secondi e riprova
 
 # Avvio del monitoraggio delle quote
 async def main():
