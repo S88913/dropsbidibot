@@ -1,3 +1,4 @@
+import asyncio
 from dotenv import load_dotenv
 import os
 import requests
@@ -56,24 +57,28 @@ def analyze_odds(odds_data, threshold=5):
     return alerts
 
 # Funzione per inviare notifiche su Telegram
-def send_alerts(alerts):
+async def send_alerts(alerts):
     if not alerts:
         print("⚠️ Nessun alert da inviare.")
         return  # Esce dalla funzione se alerts è vuoto
     
     for alert in alerts:
-        bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
+        await bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
 
 # Avvio del monitoraggio delle quote
-if __name__ == "__main__":
+async def main():
     print("Inizio monitoraggio delle quote...")
     while True:
         odds_data = get_odds()
         if odds_data:
             alerts = analyze_odds(odds_data)
-            if alerts:  # Controllo per evitare di chiamare send_alerts() su un valore None
-                send_alerts(alerts)
-        time.sleep(600)  # Controlla ogni 10 minuti
+            if alerts:
+                await send_alerts(alerts)  # Ora è atteso correttamente
+        await asyncio.sleep(600)  # Attende senza bloccare il processo
+
+if __name__ == "__main__":
+    asyncio.run(main())  # Avvia il loop asincrono
+
 
 # Creazione del server Flask per Render
 app = Flask(__name__)
