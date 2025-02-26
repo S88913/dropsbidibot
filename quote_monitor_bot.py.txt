@@ -1,3 +1,13 @@
+from dotenv import load_dotenv
+import os
+
+# Carica le variabili dal file .env
+load_dotenv()
+
+# Legge le chiavi dal file .env
+TELEGRAM_TOKEN = os.getenv("7586561608:AAHFEJpFQLEL4scHPUrdyB34-azNUz6XVOQ")
+CHAT_ID = os.getenv("6146221712")
+API_KEY = os.getenv("a5e03878c41b43724fae135d2eb62d22")
 import requests
 import time
 import pandas as pd
