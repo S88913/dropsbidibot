@@ -57,7 +57,9 @@ def analyze_odds(odds_data, threshold=5):
 # Funzione per inviare notifiche su Telegram
 def send_alerts(alerts):
     for alert in alerts:
-        bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=telegram.ParseMode.MARKDOWN)
+        from telegram.constants import ParseMode
+
+bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
 
 # Avvio del monitoraggio delle quote
 if __name__ == "__main__":

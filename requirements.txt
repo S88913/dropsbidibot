@@ -1,6 +1,6 @@
 requests
 python-dotenv
-python-telegram-bot
+python-telegram-bot==20.0
 pandas
 beautifulsoup4
 flask
