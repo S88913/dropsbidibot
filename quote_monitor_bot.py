@@ -7,6 +7,7 @@ import telegram
 from bs4 import BeautifulSoup
 from datetime import datetime
 from flask import Flask
+from telegram.constants import ParseMode
 
 # Carica le variabili dal file .env
 load_dotenv()
@@ -56,10 +57,12 @@ def analyze_odds(odds_data, threshold=5):
 
 # Funzione per inviare notifiche su Telegram
 def send_alerts(alerts):
+    if not alerts:
+        print("⚠️ Nessun alert da inviare.")
+        return  # Esce dalla funzione se alerts è vuoto
+    
     for alert in alerts:
-        from telegram.constants import ParseMode
-
-bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
+        bot.send_message(chat_id=CHAT_ID, text=alert, parse_mode=ParseMode.MARKDOWN)
 
 # Avvio del monitoraggio delle quote
 if __name__ == "__main__":
@@ -68,7 +71,7 @@ if __name__ == "__main__":
         odds_data = get_odds()
         if odds_data:
             alerts = analyze_odds(odds_data)
-            if alerts:
+            if alerts:  # Controllo per evitare di chiamare send_alerts() su un valore None
                 send_alerts(alerts)
         time.sleep(600)  # Controlla ogni 10 minuti
 
